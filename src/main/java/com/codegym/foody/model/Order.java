@@ -1,35 +1,46 @@
 package com.codegym.foody.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Data
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull(message = "Vui lòng điền vào trường này")
     private LocalDateTime orderDate;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private User customer;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
-
-    @Column(nullable = false)
-    private Double totalPrice;
+    @PrePersist
+    public void prePersist() {
+        if (orderDate == null) {
+            this.orderDate = LocalDateTime.now();
+        }
+    }
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
+    private OrderStatus status;
 
-    public enum Status {
-        PENDING, CONFIRMED, PREPARING, DELIVERING, COMPLETED, CANCELLED
-    }
+    @NotNull(message = "Vui lòng điền vào trường này")
+    @Min(value = 0, message = "Tổng giá tiền phải lớn hơn 0")
+    private Double totalPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 }

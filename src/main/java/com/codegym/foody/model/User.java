@@ -1,11 +1,10 @@
 package com.codegym.foody.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -45,10 +44,9 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    @Column(nullable = false)
-    private Boolean status = true;
+    @NotNull
+    private Boolean status;
 
-    public enum Role {
-        CUSTOMER, EMPLOYEE, ADMIN, DELIVERY_PERSON
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Restaurant> restaurants;
 }

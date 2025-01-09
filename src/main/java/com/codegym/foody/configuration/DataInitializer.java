@@ -1,5 +1,6 @@
 package com.codegym.foody.configuration;
 
+import com.codegym.foody.model.Role;
 import com.codegym.foody.model.User;
 import com.codegym.foody.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class DataInitializer implements CommandLineRunner {
             admin.setFullname("Administrator");
             admin.setPhone("+84999999999");
             admin.setAddress("Foody Store");
-            admin.setRole(User.Role.ADMIN);
+            admin.setRole(Role.ADMIN);
             admin.setStatus(true);
 
             userRepository.save(admin);

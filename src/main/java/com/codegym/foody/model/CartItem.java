@@ -1,6 +1,7 @@
 package com.codegym.foody.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -11,14 +12,14 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @NotNull(message = "Vui lòng điền vào trường này")
+    private Integer quantity;
+
+    @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "food_id", nullable = false)
-    private Food food;
-
-    @Column(nullable = false)
-    private Integer quantity;
+    @ManyToOne
+    @JoinColumn(name = "menu_id", nullable = false)
+    private Menu menu;
 }

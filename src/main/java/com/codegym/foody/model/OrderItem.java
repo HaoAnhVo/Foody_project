@@ -1,6 +1,8 @@
 package com.codegym.foody.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -11,17 +13,18 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @NotNull(message = "Vui lòng điền vào trường này")
+    private Integer quantity;
+
+    @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "food_id", nullable = false)
-    private Food food;
+    @ManyToOne
+    @JoinColumn(name = "menu_id", nullable = false)
+    private Menu menu;
 
-    @Column(nullable = false)
-    private Integer quantity;
-
-    @Column(nullable = false)
+    @NotNull
+    @Min(value = 0, message = "Giá phải lớn hơn 0")
     private Double price;
 }
