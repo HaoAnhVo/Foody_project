@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <script src="https://kit.fontawesome.com/bd7b2915a7.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/voucher.css}" />
+    <title>Thông tin voucher</title>
+</head>
+<body>
+<div class="container">
+    <h3>THÔNG TIN VOUCHER</h3>
+    <div class="main-info">
+        <div class="search">
+            <div class="add-button">
+                <a th:href="@{/voucher/add}">
+                    <i class="fa-solid fa-plus"></i>
+                    <p>Thêm mới</p>
+                </a>
+            </div>
+
+            <div class="search-input">
+                <form th:action="@{/voucher/list}" method="get">
+                    <input type="hidden" name="action" value="voucger">
+                    <div class="input">
+                        <input type="text" name="code" placeholder="Nhập mã voucher"
+                               th:value="${code}" />
+                    </div>
+                    <div class="icon">
+                        <button class="btn btn-search" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+        <div class="info-product">
+            <table border="1">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã giảm giá</th>
+                    <th>Giá trị giảm giá</th>
+                    <th>Loại giảm giá</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Giá trị tối thiểu</th>
+                    <th>Giới hạn sử dụng</th>
+                    <th>Hoạt động</th>
+                    <th>Hành động</th>
+                </tr>
+
+                <div th:if="${not #strings.isEmpty(errorMessage)}" class="error-message">
+                    <p th:text="${errorMessage}"></p>
+                </div>
+
+                <th:block th:each="item, iterStat : ${vouchers}">
+                    <tr>
+                        <td class="small" th:text="${iterStat.index + 1}"></td>
+                        <td class="medium" th:text="${item.code}"></td>
+                        <td class="medium" th:text="${item.discountValue}"></td>
+                        <td class="medium" th:text="${item.discountType}"></td>
+                        <td class="medium" th:text="${item.startDate}"></td>
+                        <td class="medium" th:text="${item.endDate}"></td>
+                        <td class="medium" th:text="${item.minOrderValue}"></td>
+                        <td class="medium" th:text="${item.usageLimit}"></td>
+                        <td class="medium">
+                            <span th:text="${item.isActive} ? 'Hoạt động' : 'Không hoạt động'"></span>
+                        </td>
+                        <td class="medium">
+                            <a th:href="@{/voucher/edit(id=${item.id})}">
+                                <button class="btn btn-edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </a>
+                            <a th:href="@{/voucher/delete(id=${item.id})}"
+                               th:onclick="'return confirm(\'Bạn có chắc chắn muốn xóa danh mục này không?\')'">
+                                <button class="btn btn-remove"><i class="fa-solid fa-trash-can"></i></button>
+                            </a>
+                        </td>
+                    </tr>
+                </th:block>
+
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

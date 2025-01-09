@@ -3,6 +3,8 @@ package com.codegym.foody.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "cart_items")
 @Data
@@ -21,4 +23,13 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    private LocalDateTime created_at;
+
+    private String formattedCreatedAt;
+
+    @PrePersist
+    public void prePersist(){
+        created_at = LocalDateTime.now();
+    }
 }

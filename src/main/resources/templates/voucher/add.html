@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/bd7b2915a7.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/addVoucher.css}" />
+    <title>Form thêm mới</title>
+</head>
+<body>
+<div class="container">
+
+    <div class="form">
+        <div th:if="${errorMessage != null}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <form th:action="@{/voucher/add}" th:object="${voucher}" method="post">
+            <table border="1">
+                <tr>
+                    <th colspan="2">THÊM MỚI</th>
+                </tr>
+                <tr>
+                    <td class="info">
+                        <label for="code">Mã giảm giá</label>
+                    </td>
+                    <td><input type="text" name="code" id="code" th:field="*{code}" />
+                        <span th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span></td>
+                </tr>
+                <tr>
+                    <td class="info">
+                        <label for="discountValue">Giá trị giảm giá</label>
+                    </td>
+                    <td><input type="text" name="discountValue" id="discountValue" th:field="*{discountValue}" />
+                        <span th:if="${#fields.hasErrors('discountValue')}" th:errors="*{discountValue}"></span></td>
+                </tr>
+
+                <tr>
+                    <td class="info">
+                        <label>Loại giảm giá</label>
+                    </td>
+                    <td class="discountType">
+                        <label th:each="type : ${T(com.codegym.foody.model.DiscountType).values()}" >
+                            <input type="radio" name="discountType" th:value="${type}" th:checked="${voucher.discountType == type}"/>
+                            <span th:text="${type}"></span>
+                        </label>
+                        <span th:if="${#fields.hasErrors('discountType')}" th:errors="*{discountType}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="info">
+                        <label for="startDate">Ngày bắt đầu</label>
+                    </td>
+                    <td><input type="date" name="startDate" id="startDate" th:value="${voucher.startDate}">
+                        <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span></td>
+                </tr>
+                <tr>
+                    <td class="info">
+                        <label for="endDate">Ngày kết thúc</label>
+                    </td>
+                    <td><input type="date" name="endDate" id="endDate" th:value="${voucher.endDate}">
+                        <span th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span></td>
+                </tr>
+
+                <tr>
+                    <td class="info">
+                        <label for="minOrderValue">Giá trị nhỏ nhất</label>
+                    </td>
+                    <td>
+                        <input type="text" name="minOrderValue" id="minOrderValue" th:field="*{minOrderValue}">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="info">
+                        <label for="usageLimit">Số lần sử dụng</label>
+                    </td>
+                    <td>
+                        <input type="text" name="usageLimit" id="usageLimit" th:field="*{usageLimit}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="tdbtn">
+                        <button type="submit">Thêm mới</button>
+                        <a th:href="@{/voucher/list}">
+                            <button type="button">Hủy</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+form {
+    width: 520px;
+    height: 500px;
+}
+
+table {
+    width: 100%;
+    background-color: rgb(249, 231, 198);
+}
+
+th {
+    padding: 10px;
+    font-size: 25px;
+}
+
+td {
+    padding: 6px;
+    font-size: 16px;
+}
+
+.info {
+    width: 30%;
+}
+
+.info i {
+    font-size: 18px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+input {
+    width: 98%;
+    outline: none;
+    font-size: 15px;
+    border: none;
+    background-color: rgb(246, 236, 218);
+    height: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+select {
+    width: 98%;
+    height: 25px;
+    background-color: rgb(246, 236, 218);
+    border: none;
+    outline: none;
+    font-size: 15px;
+}
+
+button {
+    background-color: rgb(16, 172, 16);
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    border: 3px solid rgb(75, 159, 75);
+    color: white;
+}
+
+.form input[type="date"] {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.discountType{
+    display: flex;
+    font-size: 15px;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.discountType input[type="radio"] {
+    width: 16px;
+    height: 16px;
+}
+
+.discountType label{
+    display: flex;
+    gap: 3px;
+}
+
+button:hover {
+    background-color: darkgreen;
+}
+
+.form a {
+    text-decoration: none;
+    color: white;
+}
+
+.tdbtn {
+    text-align: center;
+}
+
+.form img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 180px;
+}
