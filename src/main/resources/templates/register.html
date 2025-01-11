@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng ký tài khoản mới</title>
+  <link rel="stylesheet" type="text/css" href="css/register.css">
+</head>
+<body>
+<div class="container">
+  <h2>Đăng ký tài khoản mới</h2>
+
+  <form th:action="@{/register}" th:object="${user}" method="post">
+    <label for="username">Tài khoản:</label>
+    <input type="text" th:field="*{username}" required>
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></span>
+    <br>
+
+    <label for="password">Mật khẩu:</label>
+    <input type="password" th:field="*{password}" required>
+    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></span>
+    <br>
+
+    <label for="fullname">Họ tên:</label>
+    <input type="text" th:field="*{fullname}" required>
+    <span th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}" class="error"></span>
+    <br>
+
+    <label for="email">Email:</label>
+    <input type="email" th:field="*{email}" required>
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+    <br>
+
+    <label for="phone">Số điện thoại:</label>
+    <input type="text" th:field="*{phone}" required>
+    <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></span>
+    <br>
+
+    <label for="address">Địa chỉ:</label>
+    <input type="text" th:field="*{address}" required>
+    <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></span>
+    <br>
+
+    <label for="role">Vai trò:</label>
+    <select id="role" th:field="*{role}" required>
+      <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+    </select>
+    <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="error"></span>
+    <br>
+
+    <button type="submit">Đăng ký</button>
+  </form>
+
+  <p th:if="${param.success}" class="success">Đăng ký thành công, vui lòng đăng nhập!</p>
+  <p th:if="${param.error}" class="error">Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.</p>
+
+  <div class="form-footer">
+    <p>Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></p>
+  </div>
+</div>
+</body>
+</html>
