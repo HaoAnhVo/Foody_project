@@ -1,6 +1,8 @@
 package com.codegym.foody.controller;
 
+import com.codegym.foody.model.Cart;
 import com.codegym.foody.model.User;
+import com.codegym.foody.service.impl.CartService;
 import com.codegym.foody.service.impl.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CartService cartService;
 
     @GetMapping
     public String showRegistrationForm(Model model) {
@@ -50,6 +57,12 @@ public class RegistrationController {
 
         user.setPassword(userService.encodePassword(user.getPassword()));
         userService.save(user);
+
+        // Giỏ hàng
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cart.setCartItems(new ArrayList<>());
+        cartService.save(cart);
 
         redirectAttributes.addFlashAttribute("message", "Đăng ký thành công! Hãy đăng nhập để tiếp tục.");
         return "redirect:/login";

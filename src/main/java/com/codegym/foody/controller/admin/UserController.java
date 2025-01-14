@@ -1,9 +1,11 @@
 package com.codegym.foody.controller.admin;
 
+import com.codegym.foody.model.Cart;
 import com.codegym.foody.model.Restaurant;
 import com.codegym.foody.model.enumable.Role;
 import com.codegym.foody.model.User;
 import com.codegym.foody.model.dto.PaginationResult;
+import com.codegym.foody.service.impl.CartService;
 import com.codegym.foody.service.impl.PaginationService;
 import com.codegym.foody.service.impl.RestaurantService;
 import com.codegym.foody.service.impl.UserService;
@@ -32,6 +34,9 @@ public class UserController {
 
     @Autowired
     private PaginationService paginationService;
+
+    @Autowired
+    private CartService cartService;
 
     @GetMapping
     public String listUsers(@RequestParam(defaultValue = "0") int page,
@@ -118,6 +123,14 @@ public class UserController {
 
         user.setPassword(userService.encodePassword(user.getPassword()));
         userService.save(user);
+
+        // Giỏ hàng
+        if (user.getRole() == Role.CUSTOMER) {
+            Cart cart = new Cart();
+            cart.setUser(user);
+            cart.setCartItems(new ArrayList<>());
+            cartService.save(cart);
+        }
 
         // Xử lý chuyển trang cuối cùng khi thêm mới user thành công
         long totalUsers = userService.getTotal();
