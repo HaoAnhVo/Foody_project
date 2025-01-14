@@ -1,22 +1,22 @@
 package com.codegym.foody.controller.admin;
 
 import com.codegym.foody.model.Order;
-import com.codegym.foody.model.OrderStatus;
+import com.codegym.foody.model.enumable.OrderStatus;
 import com.codegym.foody.model.Restaurant;
+import com.codegym.foody.model.dto.PaginationResult;
 import com.codegym.foody.service.impl.OrderService;
+import com.codegym.foody.service.impl.PaginationService;
 import com.codegym.foody.service.impl.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/orders")
@@ -26,6 +26,9 @@ public class OrderController {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private PaginationService paginationService;
 
     @GetMapping
     public String listOrders(@RequestParam(value = "keyword", required = false) String keyword,
@@ -45,18 +48,13 @@ public class OrderController {
         Page<Order> orderPage = orderService.searchOrders(keyword, restaurantId, pageable);
         List<Restaurant> restaurants = restaurantService.getAllRestaurants();
 
-        int totalPages = orderPage.getTotalPages();
-        int currentPage = orderPage.getNumber();
-
-        int start = Math.max(0, currentPage - 2);
-        int end = Math.min(totalPages, currentPage + 3);
-        List<Integer> pageNumbers = IntStream.range(start, end).boxed().toList();
+        PaginationResult paginationResult = paginationService.calculatePagination(orderPage);
 
         model.addAttribute("orderPage", orderPage);
         model.addAttribute("orders", orderPage.getContent());
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("currentPage", paginationResult.getCurrentPage());
+        model.addAttribute("totalPages", paginationResult.getTotalPages());
+        model.addAttribute("pageNumbers", paginationResult.getPageNumbers());
         model.addAttribute("restaurants", restaurants);
         model.addAttribute("keyword", keyword);
         model.addAttribute("restaurantId", restaurantId);

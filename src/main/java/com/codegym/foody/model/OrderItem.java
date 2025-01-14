@@ -1,9 +1,10 @@
 package com.codegym.foody.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
@@ -24,7 +25,6 @@ public class OrderItem {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
-    @NotNull
-    @Min(value = 0, message = "Giá phải lớn hơn 0")
-    private Double price;
+    @Column(name = "total_price", nullable = false)
+    private BigDecimal price;
 }

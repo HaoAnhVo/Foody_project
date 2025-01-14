@@ -33,21 +33,6 @@
             </div>
         </div>
         <div class="mb-3">
-            <label for="user" class="form-label">Quản lý nhà hàng</label>
-            <select id="user" name="user" class="form-select" th:field="*{user}">
-                <option value="">-- Tài khoản --</option>
-                <option th:each="m : ${merchants}"
-                        th:value="${m.id}"
-                        th:text="${m.username}"
-                        th:selected="${user != null and m.id == user.id}">
-                </option>
-            </select>
-            <div th:if="${#fields.hasErrors('user')}" class="error">
-                <span th:errors="*{user}"></span>
-            </div>
-        </div>
-
-        <div class="mb-3">
             <label for="openingTime" class="form-label">Giờ mở cửa</label>
             <input type="time" id="openingTime" name="openingTime" class="form-control" th:field="*{openingTime}">
             <div th:if="${#fields.hasErrors('openingTime')}" class="error">
@@ -59,6 +44,21 @@
             <input type="time" id="closingTime" name="closingTime" class="form-control" th:field="*{closingTime}">
             <div th:if="${#fields.hasErrors('closingTime')}" class="error">
                 <span th:errors="*{closingTime}"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="user" class="form-label">Quản lý</label>
+            <select id="user" name="user" class="form-select" th:field="*{user}" th:disabled="${restaurant.id != null}">
+                <option value="">-- Tài khoản --</option>
+                <option th:each="m : ${merchants}"
+                        th:value="${m.id}"
+                        th:text="${m.username}"
+                        th:selected="${user != null and m.id == user.id}">
+                </option>
+            </select>
+            <input type="hidden" th:if="${restaurant.id != null}" th:field="*{user}" />
+            <div th:if="${#fields.hasErrors('user')}" class="error">
+                <span th:errors="*{user}"></span>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Lưu</button>

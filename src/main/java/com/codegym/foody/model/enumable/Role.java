@@ -1,4 +1,4 @@
-package com.codegym.foody.model;
+package com.codegym.foody.model.enumable;
 
 public enum Role {
     ADMIN("Quản trị viên"),

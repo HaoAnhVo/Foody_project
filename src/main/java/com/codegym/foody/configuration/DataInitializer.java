@@ -1,6 +1,6 @@
 package com.codegym.foody.configuration;
 
-import com.codegym.foody.model.Role;
+import com.codegym.foody.model.enumable.Role;
 import com.codegym.foody.model.User;
 import com.codegym.foody.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,6 @@ public class DataInitializer implements CommandLineRunner {
 
             userRepository.save(admin);
             System.out.println("Admin account created successfully!");
-        } else {
-            System.out.println("Admin account already exists!");
         }
     }
 }

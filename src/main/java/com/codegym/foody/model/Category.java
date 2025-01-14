@@ -16,7 +16,4 @@ public class Category {
 
     @NotBlank(message = "Vui lòng điền vào trường này")
     private String name;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Menu> menus;
 }

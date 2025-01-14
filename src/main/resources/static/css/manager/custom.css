@@ -5,8 +5,56 @@ body {
     padding: 0;
 }
 
+/* Navbar */
+.navbar {
+    background-color: #525252;
+    padding: 10px 20px;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: white !important;
+    font-size: 16px;
+}
+
+.navbar-nav .nav-item .nav-link--hover:hover, .navbar-brand:hover {
+    color: #ffc107 !important;
+}
+
+.navbar-nav .nav-item span {
+    color: #f9bc1a !important;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.navbar-toggler-icon {
+    background-color: white !important;
+}
+
+.navbar-nav .nav-item a {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item .fa-sign-out-alt {
+    margin-left: 5px;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+.nav-item:hover {
+    text-decoration: none !important;
+}
+
 /* Sidebar */
 .sidebar {
+    margin-top: 60px;
     width: 250px;
     height: 100vh;
     background-color: #343a40;
@@ -43,6 +91,7 @@ body {
 
 /* Content Section */
 .container {
+    margin-top: 60px;
     width: auto;
     margin-left: 260px;
     padding: 30px;
@@ -112,6 +161,65 @@ button.btn-success {
 
 button.btn-success:hover {
     background-color: #218838;
+}
+
+/*  Dashboard Styling  */
+.dashboard-item {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.item-count {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.item-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: underline;
+}
+
+.item-link:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.panel {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.panel-primary .panel-heading {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.panel-primary .panel-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.panel-primary .panel-body h3 {
+    font-size: 1.8rem;
+    color: #343a40;
+    font-weight: bold;
 }
 
 /* Pagination */

@@ -54,7 +54,7 @@
                 <span th:errors="*{address}"></span>
             </div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" th:if="${user.id == null}">
             <label for="role" class="form-label">Vai trò</label>
             <select id="role" name="role" class="form-select" th:field="*{role}">
                 <option value="">-- Chọn vai trò --</option>

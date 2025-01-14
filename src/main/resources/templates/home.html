@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>FOODY | Trang chủ</title>
 </head>
 <body>
-<h1>Home Page</h1>
+<h1>Trang chủ</h1>
+<a th:href="@{/register}" class="btn btn-secondary">Đăng ký</a>
+<a th:href="@{/register-merchant}" class="btn btn-secondary">Đăng ký đối tác</a>
+<a th:href="@{/login}" class="btn btn-secondary">Đăng nhập</a>
 </body>
 </html>

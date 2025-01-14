@@ -1,10 +1,10 @@
 package com.codegym.foody.model;
 
+import com.codegym.foody.model.enumable.OrderStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,22 +16,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Vui lòng điền vào trường này")
+    @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
-
-    @PrePersist
-    public void prePersist() {
-        if (orderDate == null) {
-            this.orderDate = LocalDateTime.now();
-        }
-    }
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @NotNull(message = "Vui lòng điền vào trường này")
-    @Min(value = 0, message = "Tổng giá tiền phải lớn hơn 0")
-    private Double totalPrice;
+    @Column(name = "total_price", nullable = false)
+    private BigDecimal totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

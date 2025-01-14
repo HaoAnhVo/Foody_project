@@ -1,6 +1,6 @@
 package com.codegym.foody.repository;
 
-import com.codegym.foody.model.Role;
+import com.codegym.foody.model.enumable.Role;
 import com.codegym.foody.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

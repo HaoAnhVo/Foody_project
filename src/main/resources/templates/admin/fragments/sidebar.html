@@ -7,6 +7,9 @@
 <body>
 <div class="sidebar">
     <div class="sidebar-header">Quản lý</div>
+    <a class="nav-link" th:href="@{/admin/dashboard}" th:classappend="${page == 'dashboard'} ? 'active' : ''">
+        Trang chủ
+    </a>
     <a class="nav-link" th:href="@{/admin/users}" th:classappend="${page == 'users'} ? 'active' : ''">
         Danh sách tài khoản
     </a>

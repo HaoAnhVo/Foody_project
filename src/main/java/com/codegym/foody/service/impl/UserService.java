@@ -1,17 +1,24 @@
 package com.codegym.foody.service.impl;
 
-import com.codegym.foody.model.Role;
+import com.codegym.foody.model.Menu;
+import com.codegym.foody.model.Restaurant;
+import com.codegym.foody.model.enumable.Role;
 import com.codegym.foody.model.User;
+import com.codegym.foody.repository.IMenuRepository;
+import com.codegym.foody.repository.IOrderRepository;
+import com.codegym.foody.repository.IRestaurantRepository;
 import com.codegym.foody.repository.IUserRepository;
 import com.codegym.foody.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -19,7 +26,16 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IRestaurantRepository restaurantRepository;
+
+    @Autowired
+    private IMenuRepository menuRepository;
+
+    @Autowired
+    private IOrderRepository orderRepository;
 
     @Override
     public Page<User> findUsersWithPaginationAndRoleFilter(List<Role> roles, int page, int size, String keyword) {
@@ -33,6 +49,11 @@ public class UserService implements IUserService {
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -74,6 +95,15 @@ public class UserService implements IUserService {
     public void delete(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Người dùng không tồn tại."));
+
+        if (!restaurantRepository.findByUserId(id).isEmpty()) {
+            throw new IllegalArgumentException("Không thể xóa người dùng vì vẫn còn liên kết với nhà hàng.");
+        }
+
+        if (!orderRepository.findByUserId(id).isEmpty()) {
+            throw new IllegalArgumentException("Không thể xóa người dùng vì vẫn còn liên kết với đơn hàng.");
+        }
+
         userRepository.delete(user);
     }
 
@@ -94,4 +124,28 @@ public class UserService implements IUserService {
     public List<User> findMerchants() {
         return userRepository.findByRole(Role.MERCHANT);
     }
+
+    @Override
+    @Transactional
+    public void updateStatusAndRelatedEntities(Long userId, boolean status) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Người dùng không tồn tại"));
+
+        user.setStatus(status);
+        userRepository.save(user);
+
+        if (user.getRole() == Role.MERCHANT) {
+            List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
+            for (Restaurant restaurant : restaurants) {
+                restaurant.setStatus(status);
+                restaurantRepository.save(restaurant);
+
+                List<Menu> menus = menuRepository.findByRestaurantId(restaurant.getId());
+                for (Menu menu : menus) {
+                    menu.setStatus(status);
+                    menuRepository.save(menu);
+                }
+            }
+        }
+    }
+
 }
