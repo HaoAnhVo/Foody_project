@@ -1,6 +1,7 @@
 package com.codegym.foody.configuration;
 
 import com.codegym.foody.formatter.DateFormatter;
+import com.codegym.foody.formatter.DiscountFormatter;
 import com.codegym.foody.formatter.PriceFormatter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,5 +22,10 @@ public class AppConfig {
     @Bean
     public PriceFormatter priceFormatter() {
         return new PriceFormatter();
+    }
+
+    @Bean
+    public DiscountFormatter discountFormatter() {
+        return new DiscountFormatter();
     }
 }
