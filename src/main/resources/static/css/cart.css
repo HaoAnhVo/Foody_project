@@ -1,0 +1,102 @@
+.cart-header {
+    top: 75px;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    background-color: rgb(246, 188, 40);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cart-header h3 {
+    font-size: 35px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.info-cart {
+    width: 100%;
+    position: relative;
+    display: flex;
+    top: 80px;
+    justify-content: center;
+}
+
+table {
+    width: 65%;
+    align-content: center;
+}
+
+th {
+    padding: 10px;
+    font-size: 16px;
+    background-color: burlywood;
+}
+
+.info-cart td {
+    padding: 6px;
+    font-size: 16px;
+    align-content: center;
+}
+
+.info-cart tr:nth-child(even) {
+    background-color: wheat ;
+
+}
+
+.info-cart tr:nth-child(odd) {
+    background-color: rgb(245, 210, 146);
+}
+
+.info-cart .btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-cart .btn a{
+    text-decoration: none;
+}
+
+.info-cart button {
+    width: 32px;
+    height: 27px;
+    background-color: rgb(215, 48, 48);
+    border: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.info-cart i {
+    margin-left: 5px;
+}
+
+.info-cart button:hover {
+    background-color: darkred;
+}
+
+.info-cart i {
+    font-size: 16px;
+    margin-right: 5px;
+    text-align: center;
+    color: white;
+}
+
+.info-cart .thbtn a {
+    text-decoration: none;
+    border: 1px solid black;
+    padding: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #ff6a00;
+    color: white;
+    border-radius: 50px;
+    font-size: 17px;
+}

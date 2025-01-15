@@ -62,6 +62,7 @@ public class RegistrationController {
         Cart cart = new Cart();
         cart.setUser(user);
         cart.setCartItems(new ArrayList<>());
+
         cartService.save(cart);
 
         redirectAttributes.addFlashAttribute("message", "Đăng ký thành công! Hãy đăng nhập để tiếp tục.");

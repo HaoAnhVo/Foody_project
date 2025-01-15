@@ -19,6 +19,15 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Optional<User> findByPhone(String phone);
     List<User> findByRole(Role role);
 
+    @Query("select a.id from User a where a.username = :username")
+    Long findIdByUsername(@Param("username") String username);
+
+    @Query("select a from User a where a.id = :id")
+    User getUserById(@Param("id") Long id);
+
+    @Query("SELECT COUNT(b) FROM User b where b.username = :username and b.password = :password")
+    Long checkUser (@Param("username") String username, @Param("password") String password);
+
     // Query Roles
     @Query("SELECT u FROM User u WHERE u.role IN :roles")
     Page<User> findAllByRoleIn(@Param("roles") List<Role> roles, Pageable pageable);

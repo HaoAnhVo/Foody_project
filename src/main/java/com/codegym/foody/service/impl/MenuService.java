@@ -1,11 +1,9 @@
 package com.codegym.foody.service.impl;
 
 import com.codegym.foody.model.Menu;
-import com.codegym.foody.model.Restaurant;
 import com.codegym.foody.repository.ICartItemRepository;
 import com.codegym.foody.repository.IMenuRepository;
 import com.codegym.foody.repository.IOrderItemRepository;
-import com.codegym.foody.repository.IRestaurantRepository;
 import com.codegym.foody.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -82,6 +80,10 @@ public class MenuService implements IMenuService {
     @Override
     public Page<Menu> findAllMenusByMerchantId(Long merchantId, String keyword, Long restaurantId, Pageable pageable) {
         return menuRepository.findAllMenusByMerchantId(merchantId, restaurantId, keyword, pageable);
+    }
+
+    public List<Menu> findAll() {
+        return menuRepository.findAll();
     }
 
 }

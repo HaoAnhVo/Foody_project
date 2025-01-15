@@ -148,4 +148,17 @@ public class UserService implements IUserService {
         }
     }
 
+    public Long getIdByUsername(String username){
+        return userRepository.findIdByUsername(username);
+    }
+
+    public boolean checkUser(String username, String password){
+        Long result = userRepository.checkUser(username, password);
+        return result != null && result > 0;
+    }
+
+    public User getUserById(Long id){
+        return userRepository.getUserById(id);
+    }
+
 }

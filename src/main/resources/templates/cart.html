@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/food.css">
+    <link rel="stylesheet" href="/css/cart.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <script src="https://kit.fontawesome.com/bd7b2915a7.js" crossorigin="anonymous"></script>
-    <title>Trang chủ</title>
+    <title>Giỏ hàng</title>
 </head>
 <body>
 <div class="container">
@@ -84,68 +85,47 @@
             </div>
         </div>
     </div>
-    <div class="slide-bar">
-        <div class="slide-container">
-            <div class="slide-image">
-                <a href="" class="slide" data-name="Món ăn 1">
-                    <img src="/food_image/image1.jpeg" alt="image1">
-                </a>
-                <a href="" class="slide" data-name="Món ăn 2">
-                    <img src="/food_image/image2.jpeg" alt="image2">
-                </a>
-                <a href="" class="slide" data-name="Món ăn 3">
-                    <img src="/food_image/image3.jpeg" alt="image3">
-                </a>
-                <a href="" class="slide" data-name="Món ăn 4">
-                    <img src="/food_image/image4.jpeg" alt="image4">
-                </a>
-                <a href="" class="slide" data-name="Món ăn 5">
-                    <img src="/food_image/image5.jpeg" alt="image5">
-                </a>
-                <a href="" class="slide" data-name="Món ăn 6">
-                    <img src="/food_image/image6.jpeg" alt="image6">
-                </a>
-            </div>
-            <div class="prev-image">
-                <i class="fa-solid fa-chevron-left"></i>
-            </div>
-            <div class="next-image">
-                <i class="fa-solid fa-chevron-right"></i>
-            </div>
-        </div>
-
+    <div class="cart-header">
+        <h3>GIỎ HÀNG CỦA BẠN</h3>
     </div>
-
-    <div class="food">
-        <th:block th:each="menu : ${menus}">
-        <a href="">
-            <div class="item-product">
-                <div class="image">
-                    <img src="/food_image/image6.jpeg" alt="image6">
-                </div>
-                <div class="info-product">
-                    <div class="name">
-                        <h3 th:text="${menu.name}"></h3>
-                    </div>
-                    <div class="address">
-                        <p th:text="${menu.restaurant.address}"></p>
-                    </div>
-                </div>
-                <div class="price-product">
-                    <div class="price">
-                        <i class="fa-solid fa-tag"></i>
-                        <h3 th:text="${@priceFormatter.formatPrice(menu.price)}"></h3>
-                    </div>
-                    <div class="cart-item">
-                        <a th:href="@{/cart/add/__${menu.id}__}"><i class="fa-solid fa-cart-plus"></i></a>
-                    </div>
-                </div>
-            </div>
-        </a>
-        </th:block>
+    <div class="info-cart">
+        <table border="1">
+            <tr>
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Hành động</th>
+            </tr>
+            <th:block th:each="item, iterStat : ${cartItems}">
+                <tr>
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${item.menu.name}"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${@priceFormatter.formatPrice(item.menu.price)}"></td>
+                    <td class="btn">
+                        <a th:href="@{/cart/delete(id=${item.id})}"
+                           th:onclick="|return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?')|">
+                            <button><i class="fa-solid fa-trash"></i></button>
+                        </a>
+                    </td>
+                </tr>
+            </th:block>
+            <tr>
+                <td colspan="6" class="total-price">
+                    <h3>Tổng giá</h3>
+                    <h2>100.000đ</h2>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="6" class="thbtn">
+                    <a th:href="">CẬP NHẬT</a>
+                    <a th:href="@{/order/add}">ĐẶT HÀNG</a>
+                </th>
+            </tr>
+        </table>
     </div>
 
 </div>
 </body>
-<script src="/js/slide_image.js"></script>
 </html>
