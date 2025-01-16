@@ -1,26 +1,35 @@
 package com.codegym.foody.sercurity;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
-                        .requestMatchers("admin/**").hasRole("ADMIN")
-                        .requestMatchers("/home", "/register", "/login").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/merchant/**").hasRole("MERCHANT")
+                        .requestMatchers("/home", "/register", "/register-merchant", "/login").permitAll()
                         .anyRequest().authenticated()
 
                 )
@@ -28,11 +37,9 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .successHandler(customSuccessHandler())
+                        .failureHandler(customAuthenticationFailureHandler)
+                        .successHandler(customAuthenticationSuccessHandler)
                         .permitAll()
-                )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/403")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -45,20 +52,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler customSuccessHandler() {
-        return (request, response, authentication) -> {
-            String role = authentication.getAuthorities().stream()
-                    .findFirst().map(Object::toString).orElse("");
-            if (role.contains("ADMIN")) {
-                response.sendRedirect("/admin/dashboard");
-            } else {
-                response.sendRedirect("/home");
-            }
-        };
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

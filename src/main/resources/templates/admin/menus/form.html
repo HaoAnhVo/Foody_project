@@ -33,6 +33,13 @@
             </div>
         </div>
         <div class="mb-3">
+            <label for="image" class="form-label">Hình ảnh</label>
+            <input type="text" id="image" name="image" class="form-control" th:field="*{imageUrl}">
+            <div th:if="${#fields.hasErrors('imageUrl')}" class="error">
+                <span th:errors="*{imageUrl}"></span>
+            </div>
+        </div>
+        <div class="mb-3">
             <label for="category" class="form-label">Danh mục</label>
             <select id="category" name="category" class="form-select" th:field="*{category.id}">
                 <option value="">-- Chọn danh mục --</option>
@@ -48,7 +55,7 @@
         </div>
         <div class="mb-3">
             <label for="restaurant" class="form-label">Nhà hàng</label>
-            <select id="restaurant" name="restaurant" class="form-select" th:field="*{restaurant.id}">
+            <select id="restaurant" name="restaurant" class="form-select" th:field="*{restaurant.id}" th:disabled="${menu.id != null}">
                 <option value="">-- Chọn nhà hàng --</option>
                 <option th:each="r : ${restaurants}"
                         th:value="${r.id}"
@@ -56,6 +63,7 @@
                         th:selected="${menu.restaurant != null and menu.restaurant.id == r.id}">
                 </option>
             </select>
+            <input type="hidden" th:if="${menu.id != null}" th:field="*{restaurant}" />
             <div th:if="${#fields.hasErrors('restaurant')}" class="error">
                 <span th:errors="*{restaurant}"></span>
             </div>

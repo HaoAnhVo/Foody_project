@@ -1,7 +1,11 @@
 package com.codegym.foody.service.impl;
 
 import com.codegym.foody.model.Menu;
+import com.codegym.foody.model.Restaurant;
+import com.codegym.foody.repository.ICartItemRepository;
 import com.codegym.foody.repository.IMenuRepository;
+import com.codegym.foody.repository.IOrderItemRepository;
+import com.codegym.foody.repository.IRestaurantRepository;
 import com.codegym.foody.service.IMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +19,11 @@ public class MenuService implements IMenuService {
     @Autowired
     private IMenuRepository menuRepository;
 
+    @Autowired
+    private ICartItemRepository cartItemRepository;
+
+    @Autowired
+    private IOrderItemRepository orderItemRepository;
 
     @Override
     public void save(Menu menu) {
@@ -34,6 +43,15 @@ public class MenuService implements IMenuService {
     public void delete(Long id) {
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Thực đơn không tồn tại"));
+
+        if (!cartItemRepository.findByMenuId(id).isEmpty()) {
+            throw new IllegalArgumentException("Không thể xóa món ăn này vì vẫn còn trong giỏ hàng.");
+        }
+
+        if (!orderItemRepository.findByMenuId(id).isEmpty()) {
+            throw new IllegalArgumentException("Không thể xóa món ăn này vì vẫn còn trong đơn hàng.");
+        }
+
         menuRepository.delete(menu);
     }
 
@@ -59,6 +77,11 @@ public class MenuService implements IMenuService {
     @Override
     public Page<Menu> findWithPaginationAndKeywordAndRestaurant(String keyword, Long categoryId, Long restaurantId, Pageable pageable) {
         return menuRepository.searchMenus(keyword, categoryId, restaurantId, pageable);
+    }
+
+    @Override
+    public Page<Menu> findAllMenusByMerchantId(Long merchantId, String keyword, Long restaurantId, Pageable pageable) {
+        return menuRepository.findAllMenusByMerchantId(merchantId, restaurantId, keyword, pageable);
     }
 
 }

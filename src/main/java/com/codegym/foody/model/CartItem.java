@@ -12,7 +12,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Vui lòng điền vào trường này")
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
     @ManyToOne

@@ -6,4 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface IMenuService extends IGeneralService<Menu> {
     Page<Menu> findWithPaginationAndKeywordAndRestaurant(String keyword, Long categoryId, Long restaurantId, Pageable pageable);
+    Page<Menu> findAllMenusByMerchantId(Long merchantId, String keyword, Long restaurantId, Pageable pageable);
 }

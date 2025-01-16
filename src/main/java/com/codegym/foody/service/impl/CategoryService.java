@@ -3,6 +3,7 @@ package com.codegym.foody.service.impl;
 import com.codegym.foody.model.Category;
 import com.codegym.foody.model.Restaurant;
 import com.codegym.foody.repository.ICategoryRepository;
+import com.codegym.foody.repository.IMenuRepository;
 import com.codegym.foody.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,9 @@ import java.util.List;
 public class CategoryService implements ICategoryService {
     @Autowired
     private ICategoryRepository categoryRepository;
+
+    @Autowired
+    private IMenuRepository menuRepository;
 
     @Override
     public Page<Category> findWithPaginationAndKeyword(String keyword, Pageable pageable) {
@@ -47,6 +51,10 @@ public class CategoryService implements ICategoryService {
     public void delete(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Danh mục không tồn tại"));
+
+        if (!menuRepository.findByCategoryId(id).isEmpty()) {
+            throw new IllegalArgumentException("Không thể xóa danh mục vì vẫn còn liên kết với thực đơn món ăn.");
+        }
         categoryRepository.delete(category);
     }
 

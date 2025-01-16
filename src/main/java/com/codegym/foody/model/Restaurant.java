@@ -1,5 +1,6 @@
 package com.codegym.foody.model;
 
+import com.codegym.foody.model.enumable.ApprovalStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,7 +8,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
@@ -17,30 +17,31 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Vui lòng điền vào trường này")
+    @NotBlank(message = "Tên nhà hàng là bắt buộc")
     private String name;
 
-    @NotBlank(message = "Vui lòng điền vào trường này")
+    @NotBlank(message = "Số điện thoại nhà hàng là bắt buộc")
     @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Sai định dạng số điện thoại")
     @Column(unique = true, nullable = false)
     private String phone;
 
-    @NotBlank(message = "Vui lòng điền vào trường này")
+    @NotBlank(message = "Địa chỉ nhà hàng là bắt buộc")
     private String address;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Menu> menus;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Order> orders;
-
     @NotNull(message = "Vui lòng nhập giờ mở cửa")
     private LocalTime openingTime;
 
     @NotNull(message = "Vui lòng nhập giờ đóng cửa")
     private LocalTime closingTime;
+
+    @Column(nullable = false)
+    private Boolean status = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 }

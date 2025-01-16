@@ -1,8 +1,12 @@
 package com.codegym.foody.controller.admin;
 
+import com.codegym.foody.model.Cart;
 import com.codegym.foody.model.Restaurant;
-import com.codegym.foody.model.Role;
+import com.codegym.foody.model.enumable.Role;
 import com.codegym.foody.model.User;
+import com.codegym.foody.model.dto.PaginationResult;
+import com.codegym.foody.service.impl.CartService;
+import com.codegym.foody.service.impl.PaginationService;
 import com.codegym.foody.service.impl.RestaurantService;
 import com.codegym.foody.service.impl.UserService;
 import jakarta.validation.Valid;
@@ -17,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 
 @Controller
@@ -28,6 +31,12 @@ public class UserController {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private PaginationService paginationService;
+
+    @Autowired
+    private CartService cartService;
 
     @GetMapping
     public String listUsers(@RequestParam(defaultValue = "0") int page,
@@ -51,18 +60,13 @@ public class UserController {
         Page<User> userPage = userService.findUsersWithPaginationAndRoleFilter(
                 rolesToFilter, page, size, keyword);
 
-        int totalPages = userPage.getTotalPages();
-        int currentPage = userPage.getNumber();
-
-        int start = Math.max(0, currentPage - 2);
-        int end = Math.min(totalPages, currentPage + 3);
-        List<Integer> pageNumbers = IntStream.range(start, end).boxed().toList();
+        PaginationResult paginationResult = paginationService.calculatePagination(userPage);
 
         model.addAttribute("userPage", userPage);
         model.addAttribute("users", userPage.getContent());
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("currentPage", paginationResult.getCurrentPage());
+        model.addAttribute("totalPages", paginationResult.getTotalPages());
+        model.addAttribute("pageNumbers", paginationResult.getPageNumbers());
         model.addAttribute("keyword", keyword);
         model.addAttribute("role", role);
         model.addAttribute("allRoles", allRoles);
@@ -120,6 +124,14 @@ public class UserController {
         user.setPassword(userService.encodePassword(user.getPassword()));
         userService.save(user);
 
+        // Giỏ hàng
+        if (user.getRole() == Role.CUSTOMER) {
+            Cart cart = new Cart();
+            cart.setUser(user);
+            cart.setCartItems(new ArrayList<>());
+            cartService.save(cart);
+        }
+
         // Xử lý chuyển trang cuối cùng khi thêm mới user thành công
         long totalUsers = userService.getTotal();
         int pageSize = 10;
@@ -163,12 +175,17 @@ public class UserController {
             return "admin/users/form";
         }
 
+        existingUser.setFullname(user.getFullname());
         existingUser.setEmail(user.getEmail());
         existingUser.setPhone(user.getPhone());
         existingUser.setAddress(user.getAddress());
-        existingUser.setStatus(user.getStatus());
-        existingUser.setRole(user.getRole());
         userService.update(existingUser);
+
+        if (!existingUser.getStatus().equals(user.getStatus())) {
+            userService.updateStatusAndRelatedEntities(existingUser.getId(), user.getStatus());
+        } else {
+            userService.update(existingUser);
+        }
 
         int pageContainingUser = userService.getPage(user.getId());
 
@@ -195,9 +212,8 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "Xóa người dùng thành công.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("messageType", "error");
-            redirectAttributes.addFlashAttribute("message", "Không thể xóa danh mục này.");
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/admin/users?page=" + currentPage;
     }
-
 }

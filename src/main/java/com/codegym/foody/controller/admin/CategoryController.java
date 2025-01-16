@@ -1,7 +1,9 @@
 package com.codegym.foody.controller.admin;
 
 import com.codegym.foody.model.Category;
+import com.codegym.foody.model.dto.PaginationResult;
 import com.codegym.foody.service.impl.CategoryService;
+import com.codegym.foody.service.impl.PaginationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,14 +15,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/categories")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private PaginationService paginationService;
 
     @GetMapping
     public String listCategories(
@@ -30,18 +33,13 @@ public class CategoryController {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Category> categoryPage = categoryService.findWithPaginationAndKeyword(keyword, pageable);
 
-        int totalPages = categoryPage.getTotalPages();
-        int currentPage = categoryPage.getNumber();
-
-        int start = Math.max(0, currentPage - 2);
-        int end = Math.min(totalPages, currentPage + 3);
-        List<Integer> pageNumbers = IntStream.range(start, end).boxed().toList();
+        PaginationResult paginationResult = paginationService.calculatePagination(categoryPage);
 
         model.addAttribute("categoryPage", categoryPage);
         model.addAttribute("categories", categoryPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("pageNumbers", pageNumbers);
+        model.addAttribute("currentPage", paginationResult.getCurrentPage());
+        model.addAttribute("totalPages", paginationResult.getTotalPages());
+        model.addAttribute("pageNumbers", paginationResult.getPageNumbers());
         model.addAttribute("keyword", keyword);
         model.addAttribute("page", "categories");
         return "admin/categories/list";
@@ -88,7 +86,7 @@ public class CategoryController {
         return "redirect:/admin/categories";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable("id") Long id, RedirectAttributes redirectAttributes,
                                  @RequestParam(value = "currentPage", defaultValue = "0") int currentPage) {
         try {
@@ -106,7 +104,7 @@ public class CategoryController {
             redirectAttributes.addFlashAttribute("message", "Xóa danh mục thành công.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("messageType", "error");
-            redirectAttributes.addFlashAttribute("message", "Không thể xóa");
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/admin/categories?page=" + currentPage;
     }

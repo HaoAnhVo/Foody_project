@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
     @Query("SELECT o FROM Order o WHERE " +
@@ -19,5 +21,6 @@ public interface IOrderRepository extends JpaRepository<Order, Long>, JpaSpecifi
     Page<Order> searchOrders(@Param("keyword") String keyword,
                              @Param("restaurantId") Long restaurantId,
                              Pageable pageable);
-
+    List<Order> findByUserId(Long userId);
+    List<Order> findByRestaurantId(Long restaurantId);
 }

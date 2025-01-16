@@ -8,7 +8,7 @@
 
 <!-- Thông tin đơn hàng -->
 <p><strong>ID:</strong> <span th:text="${order.id}"></span></p>
-<p><strong>Ngày đặt:</strong> <span th:text="${order.orderDate}"></span></p>
+<p><strong>Ngày đặt:</strong> <span th:text="${@dateFormatter.formatDateTime(order.orderDate)}"></span></p>
 <p><strong>Khách hàng:</strong> <span th:text="${order.user.fullname}"></span></p>
 <p><strong>Nhà hàng:</strong> <span th:text="${order.restaurant.name}"></span></p>
 <p><strong>Tổng giá:</strong> <span th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2)}"></span></p>
