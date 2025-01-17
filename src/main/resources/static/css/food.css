@@ -132,6 +132,34 @@
     align-items: center;
 }
 
+.right-header .order a{
+    text-decoration: none;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-header .cart a{
+    text-decoration: none;
+    color: white;
+    display:flex;
+}
+
+.right-header .info a{
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-header .register a{
+    text-decoration: none;
+    color: white;
+}
+
 .right-header .order, .cart, .register, .info {
     height: 45px;
     display: flex;

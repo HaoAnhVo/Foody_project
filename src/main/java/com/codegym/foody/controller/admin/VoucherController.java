@@ -55,9 +55,8 @@ public class VoucherController {
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes){
         if (voucherService.existVoucherCode(voucher.getCode())){
-            redirectAttributes.addFlashAttribute("messageType", "error");
-            redirectAttributes.addAttribute("message", "Mã giảm giá đã tồn tại.");
-            return "redirect:/admin/vouchers/create";
+            bindingResult.rejectValue("code","error.voucher", "Mã giảm giá đã tồn tại!");
+            return "admin/vouchers/form";
         }
         if (bindingResult.hasErrors()) {
             return "admin/vouchers/form";
@@ -88,9 +87,8 @@ public class VoucherController {
         Voucher existVoucher = voucherService.getById(id);
         if (!existVoucher.getCode().equals(code)){
             if (voucherService.existVoucherCode(code)){
-                redirectAttributes.addFlashAttribute("messageType", "error");
-                redirectAttributes.addAttribute("message", "Mã giảm giá đã tồn tại.");
-                return "redirect:/admin/vouchers/edit/" + id;
+                bindingResult.rejectValue("code","error.voucher", "Mã giảm giá đã tồn tại!");
+                return "admin/vouchers/form";
             }
         }
         voucherService.update(voucher);

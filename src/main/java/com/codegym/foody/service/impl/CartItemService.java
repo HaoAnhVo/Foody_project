@@ -6,6 +6,10 @@ import com.codegym.foody.service.ICartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CartItemService implements ICartItemService {
     @Autowired
@@ -39,5 +43,17 @@ public class CartItemService implements ICartItemService {
     @Override
     public int getPage(Long id) {
         return 0;
+    }
+
+    public List<CartItem> findAllByCartId(Long cartId) {
+        return cartItemRepository.findAllByCartId(cartId);
+    }
+
+    public Optional<CartItem> findById(Long id) {
+        return cartItemRepository.findById(id);
+    }
+
+    public Long getNumProduct(Long cartId, Long userId){
+        return cartItemRepository.getNumProduct(cartId, userId);
     }
 }

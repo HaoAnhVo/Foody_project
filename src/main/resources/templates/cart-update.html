@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/food.css">
-    <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="/css/cart-update.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
@@ -25,42 +25,39 @@
         <h3>GIỎ HÀNG CỦA BẠN</h3>
     </div>
     <div class="info-cart">
+        <form th:action="@{/cart/update}" method="post" class="main-form">
             <table border="1">
                 <tr>
                     <th>STT</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
                     <th>Đơn giá</th>
-                    <th>Xóa</th>
                 </tr>
                 <th:block th:each="item, iterStat : ${cartItems}">
                     <tr>
                         <td th:text="${iterStat.index + 1}"></td>
                         <td th:text="${item.menu.name}"></td>
-                        <td th:text="${item.quantity}"></td>
-                        <td th:text="${@priceFormatter.formatPrice(item.menu.price)}"></td>
-                        <td class="btn">
-                            <a th:href="@{/cart/delete(id=${item.id})}"
-                               th:onclick="|return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?')|">
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </a>
+                        <td>
+                            <input type="number" min="0" th:name="qty" th:value="${item.quantity.toString()}"/>
                         </td>
+                        <td th:text="${@priceFormatter.formatPrice(item.menu.price)}"></td>
                     </tr>
                 </th:block>
                 <tr>
-                    <td colspan="5" class="total-price">
+                    <td colspan="4" class="total-price">
                         <h3>Tổng giá</h3>
                         <h2 th:text="${@priceFormatter.formatPrice(totalAmount)}"></h2>
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="5" class="action-row">
-                        <a class="order-btn" th:href="@{/cart/update}">CẬP NHẬT SỐ LƯỢNG</a>
-                        <a class="order-btn" th:href="@{/order/add}">ĐẶT HÀNG</a>
+                    <th colspan="4" class="action-row">
+                        <input class="submit" type="submit" value="CẬP NHẬT"/>
+                        <a class="order-btn" th:href="@{/cart}">QUAY LẠI</a>
                     </th>
 
                 </tr>
             </table>
+        </form>
     </div>
 
 </div>
