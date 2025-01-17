@@ -1,0 +1,16 @@
+<div th:fragment="sidebar" class="sidebar">
+    <div class="sidebar-header">Quản lý</div>
+    <a class="nav-link" th:href="@{/merchant/dashboard}" th:classappend="${page == 'dashboard'} ? 'active' : ''">
+        Trang chủ
+    </a>
+    <a class="nav-link" th:href="@{/merchant/restaurants}" th:classappend="${page == 'restaurants'} ? 'active' : ''">
+        Quản lý nhà hàng
+    </a>
+    <a class="nav-link" th:href="@{/merchant/menus}" th:classappend="${page == 'menus'} ? 'active' : ''">
+        Quản lý thực đơn
+    </a>
+    <a class="nav-link" th:href="@{/merchant/orders}" th:classappend="${page == 'orders'} ? 'active' : ''">
+        Quản lý đơn hàng
+    </a>
+</div>
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/food.css">
+    <link rel="stylesheet" href="/css/cart-update.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet">
+    <script src="https://kit.fontawesome.com/bd7b2915a7.js" crossorigin="anonymous"></script>
+    <link href="/css/toast.css" rel="stylesheet"/>
+    <title>Giỏ hàng</title>
+</head>
+<body>
+<div id="alert-message"
+     th:if="${message}"
+     th:classappend="${messageType == 'success'} ? 'alert-success' : 'alert-error'"
+     th:text="${message}">
+</div>
+<div class="container">
+    <div th:include="~{/admin/fragments/homeHeader :: homeHeader}"></div>
+    <div class="cart-header">
+        <h3>GIỎ HÀNG CỦA BẠN</h3>
+    </div>
+    <div class="info-cart">
+        <form th:action="@{/cart/update}" method="post" class="main-form">
+            <table border="1">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                </tr>
+                <th:block th:each="item, iterStat : ${cartItems}">
+                    <tr>
+                        <td th:text="${iterStat.index + 1}"></td>
+                        <td th:text="${item.menu.name}"></td>
+                        <td>
+                            <input type="number" min="0" th:name="qty" th:value="${item.quantity.toString()}"/>
+                        </td>
+                        <td th:text="${@priceFormatter.formatPrice(item.menu.price)}"></td>
+                    </tr>
+                </th:block>
+                <tr>
+                    <td colspan="4" class="total-price">
+                        <h3>Tổng giá</h3>
+                        <h2 th:text="${@priceFormatter.formatPrice(totalAmount)}"></h2>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4" class="action-row">
+                        <input class="submit" type="submit" value="CẬP NHẬT"/>
+                        <a class="order-btn" th:href="@{/cart}">QUAY LẠI</a>
+                    </th>
+
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrapA@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/alert.js}"></script>
+</body>
+</html>

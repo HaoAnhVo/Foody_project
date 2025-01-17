@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Chi tiết đơn hàng</title>
+</head>
+<body>
+<h1>Chi tiết đơn hàng</h1>
+
+<!-- Thông tin đơn hàng -->
+<p><strong>ID:</strong> <span th:text="${order.id}"></span></p>
+<p><strong>Ngày đặt:</strong> <span th:text="${@dateFormatter.formatDateTime(order.orderDate)}"></span></p>
+<p><strong>Khách hàng:</strong> <span th:text="${order.user.fullname}"></span></p>
+<p><strong>Nhà hàng:</strong> <span th:text="${order.restaurant.name}"></span></p>
+<p><strong>Tổng giá:</strong> <span th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2)}"></span></p>
+<p><strong>Trạng thái:</strong> <span th:text="${order.status}"></span></p>
+
+<!-- Cập nhật trạng thái đơn hàng -->
+<form th:action="@{/admin/orders/{id}/update-status(id=${order.id})}" method="post">
+  <select name="status">
+    <option value="PENDING" th:selected="${order.status == 'PENDING'}">Chờ xử lý</option>
+    <option value="COMPLETED" th:selected="${order.status == 'COMPLETED'}">Hoàn thành</option>
+    <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">Đã hủy</option>
+  </select>
+  <button type="submit">Cập nhật</button>
+</form>
+
+<!-- Danh sách sản phẩm trong đơn hàng -->
+<h2>Sản phẩm</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Tên sản phẩm</th>
+    <th>Số lượng</th>
+    <th>Giá</th>
+    <th>Thành tiền</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="item : ${order.orderItems}">
+    <td th:text="${item.menu.name}"></td>
+    <td th:text="${item.quantity}"></td>
+    <td th:text="${#numbers.formatDecimal(item.price, 1, 2)}"></td>
+    <td th:text="${#numbers.formatDecimal(item.quantity * item.price, 1, 2)}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<!-- Nút quay lại -->
+<a th:href="@{/admin/orders}">Quay lại danh sách</a>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Danh sách tài khoản</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!--  Custom Style  -->
+    <link href="/css/toast.css" rel="stylesheet"/>
+    <link href="/css/manager/custom.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="alert-message"
+     th:if="${message}"
+     th:classappend="${messageType == 'success'} ? 'alert-success' : 'alert-error'"
+     th:text="${message}">
+</div>
+<!--  Navbar  -->
+<div th:replace="common/navbar :: .navbar"></div>
+<!-- Sidebar -->
+<div th:replace="admin/fragments/sidebar :: .sidebar"></div>
+
+<div class="container">
+    <div class="content">
+        <form class="d-flex mb-3 align-items-center" method="get" th:action="@{/admin/users}">
+            <input type="text" name="keyword" class="form-control me-2 search-input"
+                   placeholder="Tìm kiếm khách hàng..." th:value="${keyword}">
+
+            <select name="role" class="form-select me-2 role-filter">
+                <option value="" th:selected="${role == null}">Tất cả</option>
+                <option th:each="r : ${allRoles}"
+                        th:value="${r}"
+                        th:text="${r.vietnameseName}"
+                        th:selected="${r.name() == role}">
+                </option>
+            </select>
+            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+        </form>
+        <a th:href="@{/admin/users/create}" class="btn btn-success mb-3">Thêm mới tài khoản</a>
+        <table class="table table-striped" border="1">
+            <thead>
+            <tr>
+                <th>Tên đăng nhập</th>
+                <th>Họ và tên</th>
+                <th>Email</th>
+                <th>Vai trò</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.fullname}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.role.vietnameseName}"></td>
+                <td th:text="${user.status ? 'Hoạt động' : 'Đang khóa'}"></td>
+                <td>
+                    <a th:href="@{/admin/users/view/{id}(id=${user.id})}" class="btn btn-info btn-sm">Xem</a>
+                    <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Bạn chắc chắn muốn xóa?');">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <ul>
+                <li class="page-item" th:class="${currentPage == 0} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/admin/users(page=${0}, keyword=${keyword})}">
+                        <<
+                    </a>
+                </li>
+
+                <li class="page-item" th:class="${currentPage == 0} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/admin/users(page=${currentPage - 1}, keyword=${keyword})}">
+                        <
+                    </a>
+                </li>
+
+                <li th:each="page : ${pageNumbers}"
+                    th:class="${page == currentPage} ? 'active' : ''">
+                    <a class="page-link" th:href="@{/admin/users(page=${page}, keyword=${keyword})}">
+                        [[${page + 1}]]
+                    </a>
+                </li>
+
+                <li class="page-item" th:class="${currentPage + 1 >= totalPages} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/admin/users(page=${currentPage + 1}, keyword=${keyword})}">
+                        >
+                    </a>
+                </li>
+
+                <li class="page-item" th:class="${currentPage + 1 >= totalPages} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/admin/users(page=${totalPages - 1}, keyword=${keyword})}">
+                        >>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/alert.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách đối tác chờ phê duyệt</title>
+</head>
+<body>
+<h1>Danh sách đối tác chờ phê duyệt</h1>
+<table>
+    <tr>
+        <th>Tên đăng nhập</th>
+        <th>Họ tên</th>
+        <th>Email</th>
+        <th>Số điện thoại</th>
+        <th>Địa chỉ</th>
+        <th>Hành động</th>
+    </tr>
+    <tr th:each="merchant : ${pendingMerchants}">
+        <td th:text="${merchant.username}"></td>
+        <td th:text="${merchant.fullname}"></td>
+        <td th:text="${merchant.email}"></td>
+        <td th:text="${merchant.phone}"></td>
+        <td th:text="${merchant.address}"></td>
+        <td>
+            <form th:action="@{/admin/dashboard/merchants/approve}" method="post">
+                <input type="hidden" name="username" th:value="${merchant.username}">
+                <button type="submit">Phê duyệt</button>
+            </form>
+            <form th:action="@{/admin/dashboard/merchants/reject}" method="post">
+                <input type="hidden" name="username" th:value="${merchant.username}">
+                <button type="submit">Từ chối</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

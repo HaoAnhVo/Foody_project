@@ -1,0 +1,163 @@
+.main-form {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 800px;
+}
+
+.cart-header {
+    top: 75px;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    background-color: rgb(246, 188, 40);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cart-header h3 {
+    font-size: 35px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.info-cart {
+    width: 100%;
+    position: relative;
+    display: flex;
+    top: 80px;
+    justify-content: center;
+}
+
+table {
+    width: 60%;
+    height: 100%;
+    align-content: center;
+}
+
+table input {
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    outline: none;
+}
+
+tr:nth-child(odd) input{
+    background-color: rgb(245, 210, 146);
+}
+
+tr:nth-child(even) input{
+    background-color: wheat ;
+
+}
+
+th {
+    padding: 10px;
+    font-size: 16px;
+    background-color: burlywood;
+}
+
+.info-cart td {
+    padding: 6px;
+    font-size: 16px;
+    align-content: center;
+}
+
+.info-cart tr:nth-child(even) {
+    background-color: wheat ;
+
+}
+
+.info-cart tr:nth-child(odd) {
+    background-color: rgb(245, 210, 146);
+}
+
+.info-cart .btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-cart .btn form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-cart .checkbox {
+    font-size: 10px;
+}
+
+.info-cart .btn a{
+    text-decoration: none;
+}
+
+.info-cart button {
+    width: 32px;
+    height: 27px;
+    background-color: rgb(215, 48, 48);
+    border: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.info-cart i {
+    margin-left: 5px;
+}
+
+.info-cart button:hover {
+    background-color: darkred;
+}
+
+.info-cart i {
+    font-size: 16px;
+    margin-right: 5px;
+    text-align: center;
+    color: white;
+}
+
+.action-row {
+    text-align: center;
+    padding: 10px;
+}
+
+.action-row .submit {
+    background-color: #f84e4e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 20px;
+    width: 120px;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+}
+
+.action-row .submit:hover {
+    background-color: #f62e2e;
+}
+
+.action-row .order-btn {
+    display: inline-block;
+    background-color: #f4865a;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.action-row .order-btn:hover {
+    background-color: #f4703b;
+}
